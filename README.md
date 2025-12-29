@@ -1,7 +1,7 @@
-<<<<<<< HEAD
 # Frontend - Sentiment Analysis API
 
-Frontend React moderno para análise de sentimento de textos.
+Frontend React moderno para análise de sentimento de textos.  
+Repositório da atividade extra do HACKATHON Criar um Front_End
 
 ## 🚀 Tecnologias
 
@@ -93,7 +93,3 @@ O frontend faz requisições POST para o endpoint `/sentiment` da API backend:
 }
 ```
 
-=======
-# sentiment_Front_End
-Repositório da atividade extra do HACKATHON Criar um Front_End
->>>>>>> 9e36919458a5b8d80ec1d48ba0a062e9d54f7036
