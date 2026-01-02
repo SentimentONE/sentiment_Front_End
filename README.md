@@ -75,21 +75,24 @@ frontend/
 
 O frontend faz requisições POST para o endpoint `/sentiment` da API backend:
 
-**Request:**
+**Request (Backend):**
 ```json
 {
-  "textContent": "Este produto é muito bom!"
+  "text": "Este produto é muito bom!"
 }
 ```
 
-**Response:**
+**Response (Backend):**
 ```json
 {
-  "id": 1,
-  "textContent": "Este produto é muito bom!",
-  "sentimentResult": "POSITIVO",
-  "confidenceScore": 0.95,
-  "analyzedAt": "2024-01-01T12:00:00"
+  "sentiment": "POSITIVO",
+  "score": 0.95,
+  "text": "Este produto é muito bom!"
 }
 ```
+
+**Nota**: O frontend mapeia a resposta do backend para o formato interno:
+- `sentiment` → `sentimentResult` (normalizado para POSITIVO/NEGATIVO)
+- `score` → `confidenceScore`
+- `text` → `textContent`
 

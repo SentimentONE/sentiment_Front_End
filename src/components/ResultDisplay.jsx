@@ -28,7 +28,24 @@ function ResultDisplay({ result }) {
 
   const getSentimentLabel = (sentiment) => {
     if (!sentiment) return 'POSITIVO'
-    return sentiment
+    
+    const sentimentUpper = sentiment.toUpperCase().trim()
+    
+    // Se for NEUTRO ou NEUTRAL, converte para POSITIVO
+    if (sentimentUpper === 'NEUTRO' || sentimentUpper === 'NEUTRAL') {
+      return 'POSITIVO'
+    }
+    
+    // Converte inglês para português
+    if (sentimentUpper === 'POSITIVE') {
+      return 'POSITIVO'
+    }
+    if (sentimentUpper === 'NEGATIVE') {
+      return 'NEGATIVO'
+    }
+    
+    // Retorna como está se já estiver em português
+    return sentimentUpper
   }
 
   const formatConfidence = (score) => {
