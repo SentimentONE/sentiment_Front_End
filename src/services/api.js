@@ -9,9 +9,78 @@ const api = axios.create({
   },
 })
 
+/**
+ * Mapeia o sentimento do backend para o formato do frontend
+ * Backend pode retornar: "POSITIVE", "NEGATIVE", "NEUTRO", "POSITIVO", "NEGATIVO" (em maiúsculas)
+ * Frontend usa: "POSITIVO", "NEGATIVO", "NEUTRO"
+ */
+const mapSentiment = (backendSentiment) => {
+  if (!backendSentiment) return 'POSITIVO'
+  
+  const sentimentUpper = backendSentiment.toUpperCase().trim()
+  
+  // Trata valores em inglês
+  if (sentimentUpper === 'NEGATIVE') {
+    return 'NEGATIVO'
+  }
+  if (sentimentUpper === 'POSITIVE') {
+    return 'POSITIVO'
+  }
+  if (sentimentUpper === 'NEUTRAL') {
+    return 'NEUTRO'
+  }
+  
+  // Trata valores em português (já vêm do backend assim quando usa análise simples)
+  if (sentimentUpper === 'NEGATIVO') {
+    return 'NEGATIVO'
+  }
+  if (sentimentUpper === 'POSITIVO') {
+    return 'POSITIVO'
+  }
+  if (sentimentUpper === 'NEUTRO') {
+    return 'NEUTRO'
+  }
+  
+  // Por padrão, assume POSITIVO
+  return 'POSITIVO'
+}
+
+/**
+ * Extrai mensagem de erro da resposta do backend
+ * Backend retorna ApiErrorResponse: { status, error, message, timestamp }
+ */
+const extractErrorMessage = (error) => {
+  if (error.response?.data) {
+    const errorData = error.response.data
+    
+    // Se for ApiErrorResponse do backend
+    if (errorData.message) {
+      return errorData.message
+    }
+    
+    // Fallback para outros formatos
+    if (errorData.error) {
+      return errorData.error
+    }
+  }
+  
+  // Erro de rede ou outro tipo
+  if (error.message) {
+    return error.message
+  }
+  
+  return 'Erro ao analisar sentimento'
+}
+
+/**
+ * Analisa o sentimento de um texto único
+ * 
+ * @param {string} textContent - Texto para análise
+ * @returns {Promise<{success: boolean, data?: object, error?: string}>}
+ */
 export const analyzeSentiment = async (textContent) => {
   try {
-    // Backend espera { "text": "..." }
+    // Backend espera: { "text": "..." }
     const payload = {
       text: textContent,
     }
@@ -19,11 +88,15 @@ export const analyzeSentiment = async (textContent) => {
     const response = await api.post('/sentiment', payload)
     
     // Backend retorna: { "sentiment": "POSITIVE", "score": 0.87, "text": "..." }
-    // Frontend espera: { sentimentResult, confidenceScore, textContent, analyzedAt }
+    const backendSentiment = response.data.sentiment
+    const score = response.data.score ?? 0
+    const text = response.data.text || textContent
+    
+    // Mapeia para formato do frontend
     const mappedData = {
-      sentimentResult: response.data.sentiment || 'NEUTRO',
-      confidenceScore: response.data.score || 0,
-      textContent: response.data.text || textContent,
+      sentimentResult: mapSentiment(backendSentiment),
+      confidenceScore: score,
+      textContent: text,
       analyzedAt: new Date().toISOString(),
     }
     
@@ -34,7 +107,50 @@ export const analyzeSentiment = async (textContent) => {
   } catch (error) {
     return {
       success: false,
-      error: error.response?.data?.message || error.message || 'Erro ao analisar sentimento',
+      error: extractErrorMessage(error),
+    }
+  }
+}
+
+/**
+ * Analisa sentimento em lote via arquivo CSV
+ * 
+ * @param {File} file - Arquivo CSV
+ * @param {string} textColumn - Nome da coluna com textos (opcional)
+ * @returns {Promise<{success: boolean, data?: object, error?: string}>}
+ */
+export const analyzeBatchCSV = async (file, textColumn = null) => {
+  try {
+    const formData = new FormData()
+    formData.append('file', file)
+    
+    if (textColumn) {
+      formData.append('textColumn', textColumn)
+    }
+
+    // Para FormData, o axios define automaticamente o Content-Type com boundary
+    // Criamos uma requisição sem o header padrão 'Content-Type' para que o axios defina corretamente
+    const response = await axios.post(`${API_URL}/sentiment/batch`, formData)
+    
+    // Backend retorna: { "results": [...], "totalProcessed": 10 }
+    const results = (response.data.results || []).map(item => ({
+      sentimentResult: mapSentiment(item.sentiment),
+      confidenceScore: item.score ?? 0,
+      textContent: item.text || '',
+      analyzedAt: new Date().toISOString(),
+    }))
+    
+    return {
+      success: true,
+      data: {
+        results,
+        totalProcessed: response.data.totalProcessed || 0,
+      },
+    }
+  } catch (error) {
+    return {
+      success: false,
+      error: extractErrorMessage(error),
     }
   }
 }

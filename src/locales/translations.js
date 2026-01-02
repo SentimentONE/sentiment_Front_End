@@ -24,7 +24,6 @@ const translations = {
       analyzedText: 'Texto Analisado',
       analyzedAt: 'Analisado em:',
       now: 'Agora',
-      neutral: 'Neutro',
       na: 'N/A',
     },
     history: {
@@ -70,7 +69,6 @@ const translations = {
       analyzedText: 'Analyzed Text',
       analyzedAt: 'Analyzed at:',
       now: 'Now',
-      neutral: 'Neutral',
       na: 'N/A',
     },
     history: {
@@ -116,7 +114,6 @@ const translations = {
       analyzedText: 'Texto Analizado',
       analyzedAt: 'Analizado en:',
       now: 'Ahora',
-      neutral: 'Neutral',
       na: 'N/A',
     },
     history: {

@@ -3,7 +3,7 @@ import { useLanguage } from '../contexts/LanguageContext'
 function ResultDisplay({ result }) {
   const { t, language } = useLanguage()
   const getSentimentColor = (sentiment) => {
-    if (!sentiment) return 'neutral'
+    if (!sentiment) return 'positive'
     
     const sentimentUpper = sentiment.toUpperCase()
     if (sentimentUpper.includes('POSITIVO') || sentimentUpper.includes('POSITIVE')) {
@@ -12,18 +12,22 @@ function ResultDisplay({ result }) {
     if (sentimentUpper.includes('NEGATIVO') || sentimentUpper.includes('NEGATIVE')) {
       return 'negative'
     }
-    return 'neutral'
+    if (sentimentUpper.includes('NEUTRO') || sentimentUpper.includes('NEUTRAL')) {
+      return 'neutral'
+    }
+    return 'positive'
   }
 
   const getSentimentIcon = (sentiment) => {
     const color = getSentimentColor(sentiment)
     if (color === 'positive') return '😊'
     if (color === 'negative') return '😞'
-    return '😐'
+    if (color === 'neutral') return '😐'
+    return '😊'
   }
 
   const getSentimentLabel = (sentiment) => {
-    if (!sentiment) return t('result.neutral')
+    if (!sentiment) return 'POSITIVO'
     return sentiment
   }
 
@@ -55,13 +59,13 @@ function ResultDisplay({ result }) {
   const sentimentStyles = {
     positive: 'bg-success/15 border-success/30 text-success',
     negative: 'bg-danger/15 border-danger/30 text-danger',
-    neutral: 'bg-neutral/15 border-neutral/30 text-neutral',
+    neutral: 'bg-warning/15 border-warning/30 text-warning',
   }
 
   const confidenceBarStyles = {
     positive: 'bg-gradient-to-r from-success to-emerald-400',
     negative: 'bg-gradient-to-r from-danger to-red-400',
-    neutral: 'bg-gradient-to-r from-neutral to-gray-400',
+    neutral: 'bg-gradient-to-r from-warning to-yellow-400',
   }
 
   return (
