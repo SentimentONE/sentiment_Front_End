@@ -11,8 +11,8 @@ const api = axios.create({
 
 /**
  * Mapeia o sentimento do backend para o formato do frontend
- * Backend pode retornar: "POSITIVE", "NEGATIVE", "NEUTRO", "POSITIVO", "NEGATIVO" (em maiúsculas)
- * Frontend usa: "POSITIVO", "NEGATIVO", "NEUTRO"
+ * Backend pode retornar: "POSITIVE", "NEGATIVE", "POSITIVO", "NEGATIVO" (em maiúsculas)
+ * Frontend usa: "POSITIVO", "NEGATIVO"
  */
 const mapSentiment = (backendSentiment) => {
   if (!backendSentiment) return 'POSITIVO'
@@ -26,8 +26,9 @@ const mapSentiment = (backendSentiment) => {
   if (sentimentUpper === 'POSITIVE') {
     return 'POSITIVO'
   }
-  if (sentimentUpper === 'NEUTRAL') {
-    return 'NEUTRO'
+  // Se receber NEUTRAL ou NEUTRO, mapeia para POSITIVO como padrão
+  if (sentimentUpper === 'NEUTRAL' || sentimentUpper === 'NEUTRO') {
+    return 'POSITIVO'
   }
   
   // Trata valores em português (já vêm do backend assim quando usa análise simples)
@@ -36,9 +37,6 @@ const mapSentiment = (backendSentiment) => {
   }
   if (sentimentUpper === 'POSITIVO') {
     return 'POSITIVO'
-  }
-  if (sentimentUpper === 'NEUTRO') {
-    return 'NEUTRO'
   }
   
   // Por padrão, assume POSITIVO

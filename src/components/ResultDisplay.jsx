@@ -12,8 +12,9 @@ function ResultDisplay({ result }) {
     if (sentimentUpper.includes('NEGATIVO') || sentimentUpper.includes('NEGATIVE')) {
       return 'negative'
     }
+    // Se receber NEUTRO ou NEUTRAL, trata como POSITIVO
     if (sentimentUpper.includes('NEUTRO') || sentimentUpper.includes('NEUTRAL')) {
-      return 'neutral'
+      return 'positive'
     }
     return 'positive'
   }
@@ -22,7 +23,6 @@ function ResultDisplay({ result }) {
     const color = getSentimentColor(sentiment)
     if (color === 'positive') return '😊'
     if (color === 'negative') return '😞'
-    if (color === 'neutral') return '😐'
     return '😊'
   }
 
@@ -59,13 +59,11 @@ function ResultDisplay({ result }) {
   const sentimentStyles = {
     positive: 'bg-success/15 border-success/30 text-success',
     negative: 'bg-danger/15 border-danger/30 text-danger',
-    neutral: 'bg-warning/15 border-warning/30 text-warning',
   }
 
   const confidenceBarStyles = {
     positive: 'bg-gradient-to-r from-success to-emerald-400',
     negative: 'bg-gradient-to-r from-danger to-red-400',
-    neutral: 'bg-gradient-to-r from-warning to-yellow-400',
   }
 
   return (
