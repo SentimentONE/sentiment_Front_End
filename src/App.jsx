@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { ThemeProvider } from './contexts/ThemeContext'
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext'
 import SentimentAnalyzer from './components/SentimentAnalyzer'
 import History from './components/History'
+import Charts from './components/Charts'
 import ThemeToggle from './components/ThemeToggle'
 import LanguageSelector from './components/LanguageSelector'
 
@@ -10,13 +11,13 @@ function AppContent() {
   const { t } = useLanguage()
   const [history, setHistory] = useState([])
 
-  const addToHistory = (analysis) => {
+  const addToHistory = useCallback((analysis) => {
     setHistory(prev => [analysis, ...prev])
-  }
+  }, [])
 
-  const clearHistory = () => {
+  const clearHistory = useCallback(() => {
     setHistory([])
-  }
+  }, [])
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -38,7 +39,7 @@ function AppContent() {
 
       <main className="flex-1 py-4">
         <div className="container mx-auto px-4 max-w-7xl">
-          <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-4 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-4 items-start mb-4">
             <div className="bg-bg-secondary-light/60 dark:bg-bg-secondary/60 backdrop-blur-sm rounded-xl border border-border-light dark:border-border p-4 shadow-xl lg:sticky lg:top-4">
               <SentimentAnalyzer onAnalysisComplete={addToHistory} />
             </div>
@@ -52,6 +53,12 @@ function AppContent() {
               </div>
             )}
           </div>
+
+          {history.length > 0 && (
+            <div className="bg-bg-secondary-light/60 dark:bg-bg-secondary/60 backdrop-blur-sm rounded-xl border border-border-light dark:border-border p-4 shadow-xl">
+              <Charts history={history} />
+            </div>
+          )}
         </div>
       </main>
 

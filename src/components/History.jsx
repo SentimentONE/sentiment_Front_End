@@ -30,7 +30,7 @@ function History({ history, onClear }) {
       <div className="flex flex-col gap-2 max-h-[calc(100vh-250px)] overflow-y-auto custom-scrollbar">
         {history.map((item, index) => (
           <div 
-            key={index} 
+            key={`${item.textContent}-${item.analyzedAt || item.timestamp}-${index}`} 
             className="bg-bg-primary-light/60 dark:bg-bg-primary/60 border border-border-light dark:border-border rounded-lg transition-all hover:border-primary hover:bg-bg-primary-light/80 dark:hover:bg-bg-primary/80"
           >
             <div 

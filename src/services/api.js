@@ -153,5 +153,75 @@ export const analyzeBatchCSV = async (file, textColumn = null) => {
   }
 }
 
+/**
+ * Busca estatísticas agregadas do backend
+ * 
+ * @returns {Promise<{success: boolean, data?: object, error?: string}>}
+ */
+export const getStatistics = async () => {
+  try {
+    const response = await api.get('/sentiment/statistics')
+    
+    // Backend retorna: StatisticsDTO
+    const data = response.data
+    
+    return {
+      success: true,
+      data: {
+        total: data.total || 0,
+        positive: data.positive || 0,
+        negative: data.negative || 0,
+        positivePercentage: data.positivePercentage || 0,
+        negativePercentage: data.negativePercentage || 0,
+        averageConfidence: data.averageConfidence || 0,
+        positiveAverageConfidence: data.positiveAverageConfidence || 0,
+        negativeAverageConfidence: data.negativeAverageConfidence || 0,
+        timeline: (data.timeline || []).map(item => ({
+          date: item.date,
+          positive: item.positive || 0,
+          negative: item.negative || 0,
+          total: item.total || 0,
+        })),
+      },
+    }
+  } catch (error) {
+    return {
+      success: false,
+      error: extractErrorMessage(error),
+    }
+  }
+}
+
+/**
+ * Busca histórico de análises do backend
+ * 
+ * @returns {Promise<{success: boolean, data?: array, error?: string}>}
+ */
+export const getHistory = async () => {
+  try {
+    const response = await api.get('/sentiment/history')
+    
+    // Backend retorna: List<HistoryItemDTO>
+    const history = (response.data || []).map(item => ({
+      id: item.id,
+      sentimentResult: mapSentiment(item.sentimentResult),
+      confidenceScore: item.confidenceScore || 0,
+      textContent: item.textContent || '',
+      analyzedAt: item.analyzedAt,
+      timestamp: item.analyzedAt,
+    }))
+    
+    return {
+      success: true,
+      data: history,
+    }
+  } catch (error) {
+    return {
+      success: false,
+      error: extractErrorMessage(error),
+    }
+  }
+}
+
 export default api
 
