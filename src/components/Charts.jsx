@@ -148,10 +148,6 @@ function Charts({ history }) {
       } else if (sentiment.includes('NEGATIVO') || sentiment.includes('NEGATIVE')) {
         negative++
         negativeConfidence += confidence
-      } else {
-        // Trata neutro como positivo
-        positive++
-        positiveConfidence += confidence
       }
 
       // Agrupa por data para timeline

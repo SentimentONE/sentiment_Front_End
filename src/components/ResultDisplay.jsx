@@ -12,10 +12,6 @@ function ResultDisplay({ result }) {
     if (sentimentUpper.includes('NEGATIVO') || sentimentUpper.includes('NEGATIVE')) {
       return 'negative'
     }
-    // Se receber NEUTRO ou NEUTRAL, trata como POSITIVO
-    if (sentimentUpper.includes('NEUTRO') || sentimentUpper.includes('NEUTRAL')) {
-      return 'positive'
-    }
     return 'positive'
   }
 
@@ -30,11 +26,6 @@ function ResultDisplay({ result }) {
     if (!sentiment) return 'POSITIVO'
     
     const sentimentUpper = sentiment.toUpperCase().trim()
-    
-    // Se for NEUTRO ou NEUTRAL, converte para POSITIVO
-    if (sentimentUpper === 'NEUTRO' || sentimentUpper === 'NEUTRAL') {
-      return 'POSITIVO'
-    }
     
     // Converte inglês para português
     if (sentimentUpper === 'POSITIVE') {

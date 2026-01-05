@@ -26,10 +26,6 @@ const mapSentiment = (backendSentiment) => {
   if (sentimentUpper === 'POSITIVE') {
     return 'POSITIVO'
   }
-  // Se receber NEUTRAL ou NEUTRO, mapeia para POSITIVO como padrão
-  if (sentimentUpper === 'NEUTRAL' || sentimentUpper === 'NEUTRO') {
-    return 'POSITIVO'
-  }
   
   // Trata valores em português (já vêm do backend assim quando usa análise simples)
   if (sentimentUpper === 'NEGATIVO') {
