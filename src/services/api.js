@@ -197,8 +197,10 @@ export const getHistory = async () => {
   try {
     const response = await api.get('/sentiment/history')
     
-    // Backend retorna: List<HistoryItemDTO>
-    const history = (response.data || []).map(item => ({
+    // Backend retorna: { historyItemList: [HistoryItemDTO] }
+    const items = response.data?.historyItemList || []
+
+    const history = items.map(item => ({
       id: item.id,
       sentimentResult: mapSentiment(item.sentimentResult),
       confidenceScore: item.confidenceScore || 0,
