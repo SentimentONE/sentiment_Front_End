@@ -3,7 +3,7 @@ const translations = {
     app: {
       title: 'Análise de Sentimento',
       subtitle: 'Analise o sentimento de qualquer texto usando inteligência artificial',
-      copyright: 'Sentiment Analysis API © 2025',
+      copyright: 'Sentiment Analysis API © 2026',
     },
     analyzer: {
       title: 'Analisar Sentimento',
@@ -65,7 +65,7 @@ const translations = {
     app: {
       title: 'Sentiment Analysis',
       subtitle: 'Analyze the sentiment of any text using artificial intelligence',
-      copyright: 'Sentiment Analysis API © 2025',
+      copyright: 'Sentiment Analysis API © 2026',
     },
     analyzer: {
       title: 'Analyze Sentiment',
@@ -127,7 +127,7 @@ const translations = {
     app: {
       title: 'Análisis de Sentimiento',
       subtitle: 'Analiza el sentimiento de cualquier texto usando inteligencia artificial',
-      copyright: 'Sentiment Analysis API © 2025',
+      copyright: 'Sentiment Analysis API © 2026',
     },
     analyzer: {
       title: 'Analizar Sentimiento',
