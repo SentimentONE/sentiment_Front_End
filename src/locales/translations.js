@@ -25,6 +25,8 @@ const translations = {
       analyzedAt: 'Analisado em:',
       now: 'Agora',
       na: 'N/A',
+      sentiment_positive: 'POSITIVO',
+      sentiment_negative: 'NEGATIVO',
     },
     history: {
       title: 'Histórico',
@@ -85,6 +87,8 @@ const translations = {
       analyzedAt: 'Analyzed at:',
       now: 'Now',
       na: 'N/A',
+      sentiment_positive: 'POSITIVE',
+      sentiment_negative: 'NEGATIVE',
     },
     history: {
       title: 'History',
@@ -145,6 +149,8 @@ const translations = {
       analyzedAt: 'Analizado en:',
       now: 'Ahora',
       na: 'N/A',
+      sentiment_positive: 'POSITIVO',
+      sentiment_negative: 'NEGATIVO',
     },
     history: {
       title: 'Historial',

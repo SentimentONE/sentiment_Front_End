@@ -4,7 +4,7 @@ function ResultDisplay({ result }) {
   const { t, language } = useLanguage()
   const getSentimentColor = (sentiment) => {
     if (!sentiment) return 'positive'
-    
+
     const sentimentUpper = sentiment.toUpperCase()
     if (sentimentUpper.includes('POSITIVO') || sentimentUpper.includes('POSITIVE')) {
       return 'positive'
@@ -23,20 +23,10 @@ function ResultDisplay({ result }) {
   }
 
   const getSentimentLabel = (sentiment) => {
-    if (!sentiment) return 'POSITIVO'
-    
-    const sentimentUpper = sentiment.toUpperCase().trim()
-    
-    // Converte inglês para português
-    if (sentimentUpper === 'POSITIVE') {
-      return 'POSITIVO'
-    }
-    if (sentimentUpper === 'NEGATIVE') {
-      return 'NEGATIVO'
-    }
-    
-    // Retorna como está se já estiver em português
-    return sentimentUpper
+    const color = getSentimentColor(sentiment)
+    if (color === 'positive') return t('result.sentiment_positive')
+    if (color === 'negative') return t('result.sentiment_negative')
+    return t('result.sentiment_positive')
   }
 
   const formatConfidence = (score) => {
@@ -77,7 +67,7 @@ function ResultDisplay({ result }) {
   return (
     <div className="mt-4 p-4 bg-bg-primary-light/60 dark:bg-bg-primary/60 rounded-lg border border-border-light dark:border-border animate-fade-in">
       <h3 className="text-lg font-semibold mb-4 text-text-primary-light dark:text-text-primary">{t('result.title')}</h3>
-      
+
       <div className="flex flex-col gap-4">
         <div className={`flex items-center justify-center gap-2 p-3 rounded-lg border-2 text-lg font-semibold text-center ${sentimentStyles[sentimentColor]}`}>
           <span className="text-2xl">{getSentimentIcon(result.sentimentResult)}</span>
